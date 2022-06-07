@@ -1,17 +1,14 @@
 <template>
-<AnadirSkill/>
-<ListadoSkill/>
+<ListadoSkills/>
 </template>
 
 <script>
-import AnadirSkill from './components/AnadirSkill.vue'
-import ListadoSkill from './components/ListadoSkill.vue'
+import ListadoSkills from './components/ListadoSkills.vue'
 
 export default {
   name: 'App',
   components: {
-    AnadirSkill,
-    ListadoSkill
+    ListadoSkills
   }
 }
 </script>
