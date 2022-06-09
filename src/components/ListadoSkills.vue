@@ -15,8 +15,13 @@
                 </div>
                 <div class="col-12">
                     <button type="button" class="btn btn-primary" id="btnAfegir" @click="addRow()">
-                        Afegir
+                        {{ textButton }}
                     </button>
+                </div>
+                <div class="col-12" v-show="show">
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,7 +42,8 @@
                         <td>{{ row.skillName }}</td>
                         <td>{{ row.num }}</td>
                         <td>
-                            <button type="button" class="btn btn-danger" v-on:click="removeRow(index)" v-bind:id="index">Esborrar</button>
+                            <button type="button" class="btn btn-danger" v-on:click="removeRow(index)" v-bind:id="index">Esborrar</button>&nbsp;
+                            <button type="button" class="btn btn-secondary" v-on:click="editRow(index)" v-bind:id="index">Editar</button>
                         </td>
                     </tr>
                 </tbody>
@@ -52,21 +58,40 @@
 export default {
   name: 'ListadoSkillS',
   data: () => ({
+    textButton: "Afegir",
+    message: "",
+    show: false,
     rows: [],
     softSkill: 'Flexibilitat',
     softSkills: ['Flexibilitat', 'Responsabilitat', 'Autonomia', 'Sociabilitat', 'Evolució'],
   }),
   methods: {
     update() {
+        this.show = false;
         if (this.valoracio > 3 || this.valoracio < 0) {
-            alert('Introdueix un valor entre 0 i 3.');
+            this.show = true;
+            this.message = 'Introdueix un valor entre 0 i 3.';
         }
     },
     addRow() {
-        this.rows.push({skillName: this.softSkill , num: this.valoracio});
+        this.show = false;
+        if(!this.rows.some(data => data.skillName === this.softSkill)){
+            this.textButton = "Afegir";
+            this.rows.push({skillName: this.softSkill , num: this.valoracio});       
+        } else {
+            this.show = true;
+            this.message = 'Aquesta soft skill ja esta valorada.';
+        }
+
     },
     removeRow(index) {
         this.rows.splice(index, 1);
+    },
+    editRow(index) {
+        this.softSkill = this.rows[index].skillName;
+        this.valoracio = this.rows[index].num;
+        this.textButton = "Modificar";
+        this.removeRow(index);
     }
   }
 }
